@@ -106,7 +106,4 @@ if uploaded_file is not None:
         st.warning("Select variables from the sidebar")
 else:
     st.info("👈 Upload a CSV file to get started!")
-```
 
-## **requirements.txt**
-`
