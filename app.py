@@ -86,26 +86,26 @@ if uploaded_file is not None:
             st.table(summary_df)
         
         with tab3:
-    st.header("Post-Hoc Tukey HSD")
-    st.info("Only shown for variables with significant ANOVA results.")
-    for var in dependent_vars:
-        try:
-            formula = f"{var} ~ {independent_var}"
-            fit = ols(formula, data=df).fit()
-            anova_table = sm.stats.anova_lm(fit, typ=1)
-            p_value = anova_table.loc[independent_var, "PR(>F)"]
-            if p_value < 0.05:
-                st.subheader(f"Tukey HSD for {var}")
-                tukey = pairwise_tukeyhsd(df[var], groups=df[independent_var])
-                tukey_df = pd.DataFrame(
-                    data=tukey._results_table.data[1:],
-                    columns=tukey._results_table.data[0]
-                )
-                st.dataframe(tukey_df, use_container_width=True)
-            else:
-                st.write(f"{var}: skipped (not significant)")
-        except Exception as e:
-            st.error(f"Error for {var}: {str(e)}")
+            st.header("Post-Hoc Tukey HSD")
+            st.info("Only shown for variables with significant ANOVA results.")
+            for var in dependent_vars:
+                try:
+                    formula = f"{var} ~ {independent_var}"
+                    fit = ols(formula, data=df).fit()
+                    anova_table = sm.stats.anova_lm(fit, typ=1)
+                    p_value = anova_table.loc[independent_var, "PR(>F)"]
+                    if p_value < 0.05:
+                        st.subheader(f"Tukey HSD for {var}")
+                        tukey = pairwise_tukeyhsd(df[var], groups=df[independent_var])
+                        tukey_df = pd.DataFrame(
+                            data=tukey._results_table.data[1:],
+                            columns=tukey._results_table.data[0]
+                        )
+                        st.dataframe(tukey_df, use_container_width=True)
+                    else:
+                        st.write(f"{var}: skipped (not significant)")
+                except Exception as e:
+                    st.error(f"Error for {var}: {str(e)}")
     else:
         st.warning("Select variables from the sidebar")
 else:
